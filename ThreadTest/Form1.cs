@@ -14,6 +14,8 @@ namespace ThreadTest
         private const int WAIT＿MILLISECONDS = 1000;
 
         private CancellationTokenSource _cts;
+        private System.Threading.Timer _timer;
+
         private delegate string SayDelegate(string word);
 
         #region constructor
@@ -397,9 +399,48 @@ namespace ThreadTest
 
         #endregion
 
+        #region timer
+
+        private void ThreadingTimerCallback(object state)
+        {
+            // 一時中断
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            SensorData data = state as SensorData;
+
+            // 同期
+            //data.RequestData();
+
+            // 非同期
+            Task task = new Task(data.RequestData);
+            task.Start();
+
+            int id = Thread.CurrentThread.ManagedThreadId;
+            Debug.WriteLine($"{ DateTime.Now.ToString()} {id}");
+
+            // 再開
+            _timer.Change(1000, 0);
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            SensorData data = new SensorData();
+            data.RecievedData += Data_RecievedData;
+
+            _timer = new System.Threading.Timer(new TimerCallback(ThreadingTimerCallback), data, 0, 1000);
+        }
+
+        private void Data_RecievedData(object sender, EventArgs e)
+        {
+            Debug.WriteLine("recieved.");
+        }
+
         #endregion
 
         #endregion
+
+        #endregion
+
 
     }
 }
