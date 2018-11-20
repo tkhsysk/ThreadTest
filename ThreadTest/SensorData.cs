@@ -14,7 +14,7 @@ namespace ThreadTest
 
         public void RequestData()
         {
-            Thread.Sleep(500);
+            Thread.Sleep(10*1000);
 
             if(RecievedData != null)
             {

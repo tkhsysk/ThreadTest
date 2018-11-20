@@ -407,7 +407,7 @@ namespace ThreadTest
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
 
             SensorData data = state as SensorData;
-
+            
             // 同期
             //data.RequestData();
 
@@ -426,7 +426,7 @@ namespace ThreadTest
         {
             SensorData data = new SensorData();
             data.RecievedData += Data_RecievedData;
-
+            
             _timer = new System.Threading.Timer(new TimerCallback(ThreadingTimerCallback), data, 0, 1000);
         }
 
@@ -435,7 +435,42 @@ namespace ThreadTest
             Debug.WriteLine("recieved.");
         }
 
+
         #endregion
+
+        SensorData data = new SensorData();
+
+        private void Execute()
+        {
+            // 非同期
+            Task task = new Task(data.RequestData);
+            task.Start();
+
+            Debug.WriteLine("execute: " + DateTime.Now);
+        }
+
+        private void ExecuteCallback(IAsyncResult ar)
+        {
+            AsyncResult result = (AsyncResult)ar;
+            Action caller = (Action)result.AsyncDelegate;
+
+            caller.EndInvoke(ar);
+
+            Debug.WriteLine("endinvoke: " + DateTime.Now);
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine("begininvoke: " + DateTime.Now);
+            IAsyncResult ar = new Action(Execute).BeginInvoke(new AsyncCallback(ExecuteCallback), null);
+
+            data.RecievedData += Data_RecievedData1;
+        }
+
+        private void Data_RecievedData1(object sender, EventArgs e)
+        {
+            Debug.WriteLine("recieved: " + DateTime.Now);
+        }
 
         #endregion
 
