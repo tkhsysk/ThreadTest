@@ -472,10 +472,21 @@ namespace ThreadTest
             Debug.WriteLine("recieved: " + DateTime.Now);
         }
 
-        #endregion
 
         #endregion
 
+        #endregion
 
+        private void button16_Click(object sender, EventArgs e)
+        {
+            Stationery stationery = new Pen();
+            Debug.WriteLine(stationery.GetCounts());
+
+            Pen pen = new Pen();
+            Debug.WriteLine(pen.GetCounts());
+
+            Debug.WriteLine(pen is Stationery);
+            Debug.WriteLine(stationery is Pen);
+        }
     }
 }
