@@ -488,5 +488,61 @@ namespace ThreadTest
             Debug.WriteLine(pen is Stationery);
             Debug.WriteLine(stationery is Pen);
         }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            // new: 静的な型によって、呼び出されるメソッドが変わる
+            // virtual/override: 動的な型によって、呼び出されるメソッドが変わる
+
+            // アップキャストは、常に安全に行える
+            // ダウンキャストは、エラーが発生する事がある。
+
+            Base bb = new Base();
+            bb.Test();    // base
+            Debug.WriteLine(bb.Text);   // base
+            //// downcast: InvalidCastException
+            //((Derived1)bb).Test();
+            Debug.WriteLine("-------------------");
+
+            Base bd = new Derived1();
+            bd.Test();  // base
+            Debug.WriteLine(bd.Text);   // derived1
+            // downcast: ok
+            ((Derived1)bd).Test();  // derived1
+            Debug.WriteLine("-------------------");
+
+            Derived1 db = new Derived1();
+            db.Test();  // derived1
+            Debug.WriteLine(db.Text);   // derived1
+            // upcast: ok
+            ((Base)db).Test();
+            Debug.WriteLine("-------------------");
+
+            // castできるかと対応している
+            Debug.WriteLine(bb is Base);    // true
+            Debug.WriteLine(bb is Derived1);    //false
+            Debug.WriteLine("-------------------");
+
+            Debug.WriteLine(bd is Base);    // true
+            Debug.WriteLine(bd is Derived1);    // true
+            Debug.WriteLine("-------------------");
+
+            Debug.WriteLine(db is Base);    // true
+            Debug.WriteLine(db is Derived1);    // true
+            Debug.WriteLine("-------------------");
+
+            // GetType()、typeof
+            Debug.WriteLine(bb.GetType() == typeof(Base));  // true
+            Debug.WriteLine(bb.GetType() == typeof(Derived1));  // false
+            Debug.WriteLine("-------------------");
+
+            Debug.WriteLine(bd.GetType() == typeof(Base));  // false ※基底クラスは一致しない
+            Debug.WriteLine(bd.GetType() == typeof(Derived1));  // true
+            Debug.WriteLine("-------------------");
+
+            Debug.WriteLine(db.GetType() == typeof(Base));  // false
+            Debug.WriteLine(db.GetType() == typeof(Derived1));  // true
+            Debug.WriteLine("-------------------");
+        }
     }
 }
