@@ -1,0 +1,21 @@
+﻿AreEqual<T>: 型、値
+AreNotEqual
+
+IsNull: 値がNULL
+IsNotNull
+
+IsTrue: 値がTrue
+IsFalse
+
+AreSame: 参照が一致
+AreNotSame
+
+IsInstanceOfType: 特定の型に一致するか
+IsNotInstanceOfType
+
+Inconclusive: テスト結果が不明
+Fail: テスト失敗とする
+
+StringAssert: 文字列の検証
+CollectionAssert: コレクションの検証
+
