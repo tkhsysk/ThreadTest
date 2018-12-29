@@ -63,5 +63,25 @@ namespace UnitTestProject1
             Debug.WriteLine((int)Animal.Cat);
             Debug.WriteLine((int)Animal.Bird);
         }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            // chainig assertion
+            // private method
+
+            SensorData data = new SensorData();
+            (data.AsDynamic().GetSensorName() as string).Is("sensor1");
+        }
+
+        [TestMethod]
+        [TestCase(1, 2, 13)]
+        public void TestMethod5()
+        {
+            TestContext.Run((int x, int y, int z) =>
+            {
+                (x + y).Is(z);
+            });
+        }
     }
 }

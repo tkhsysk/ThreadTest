@@ -21,5 +21,10 @@ namespace ThreadTest
                 RecievedData(this, EventArgs.Empty);
             }
         }
+
+        private string GetSensorName()
+        {
+            return "sensor1";
+        }
     }
 }
